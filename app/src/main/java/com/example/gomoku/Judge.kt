@@ -14,10 +14,10 @@ class Judge {
         val isBlack = (stoneCounter % 2 == 1)
 
         //5つ並んだら、基本は勝ち
-        if( checkStraightStone(board, x, y, 5)) {
+        if( checkStraightStone(board, posX, posY, 5)) {
             if( isBlack) {
                 //6つ並んだら、黒番は反則負け
-                if( checkStraightStone(board, x, y, 6)) {
+                if( checkStraightStone(board, posX, posY, 6)) {
                     return JudgeState.WIN_WHITE
                 }
                 return JudgeState.WIN_BLACK
