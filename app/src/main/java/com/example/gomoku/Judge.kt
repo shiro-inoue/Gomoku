@@ -9,7 +9,7 @@ class Judge {
     fun init() {}
 
     //勝負け判定関数
-    fun judgeWinLoss( board: List<Stone>, stoneCounter: Int, x: Int, y: Int): JudgeState {
+    fun judgeWinLoss( board: MutableList<MutableList<Stone>>, stoneCounter: Int, posX: Int, posY: Int): JudgeState {
         //石数なので、1始まり。奇数は黒番
         val isBlack = (stoneCounter % 2 == 1)
 
@@ -31,7 +31,7 @@ class Judge {
         return JudgeState.CONTINUE
     }
 
-    private fun checkStraightStone( board: List<Stone>, x: Int, y: Int, checkCnt: Int): Boolean {
+    private fun checkStraightStone( board: MutableList<MutableList<Stone>>, posX: Int, posY: Int, checkCnt: Int): Boolean {
         //いったんすべてfalseとする
         return false
     }
