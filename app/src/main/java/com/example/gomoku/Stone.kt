@@ -1,4 +1,9 @@
 package com.example.gomoku
 
-class Stone {
+import android.widget.Button
+
+enum class StoneState {
+    EMPTY, BLACK, WHITE
 }
+
+class Stone (var state: StoneState, var btn: Button)
