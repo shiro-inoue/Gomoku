@@ -8,9 +8,7 @@ import android.graphics.Point
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -25,6 +23,25 @@ class GameActivity : AppCompatActivity() {
 
         // 基盤の初期化
         initBoard();
+
+        val setting = intent.getSerializableExtra("SETTING")
+        if(setting is Setting) {
+            findViewById<LinearLayout>(R.id.displayLinear).also { linearLayout ->
+                val textView = TextView(this)
+                textView.setText("board  = " + setting.board.toString())
+                linearLayout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+            findViewById<LinearLayout>(R.id.displayLinear).also { linearLayout ->
+                val textView = TextView(this)
+                textView.setText("rule33 = " + setting.rule33.toString())
+                linearLayout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+            findViewById<LinearLayout>(R.id.displayLinear).also { linearLayout ->
+                val textView = TextView(this)
+                textView.setText("rule44 = " + setting.rule44.toString())
+                linearLayout.addView(textView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+        }
     }
 
     private val MAX_ROW = 13 // 最大 '行' 数(横方向)

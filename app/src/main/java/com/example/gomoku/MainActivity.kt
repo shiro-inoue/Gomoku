@@ -12,6 +12,10 @@ class MainActivity : AppCompatActivity() {
 
         startButton.setOnClickListener {
             val intent = Intent(applicationContext, GameActivity::class.java)
+
+            val setting = Setting(13, false, true)
+            intent.putExtra("SETTING", setting)
+
             startActivity(intent)
         }
     }
