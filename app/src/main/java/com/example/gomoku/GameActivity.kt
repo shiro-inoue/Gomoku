@@ -21,17 +21,18 @@ class GameActivity : AppCompatActivity() {
 
         // 初期化処理
         mBoard = MutableList(MAX_ROW, {mutableListOf<Stone>()})
-        mStoneCounter = 0
 
         // 基盤の初期化
         initBoard();
     }
 
-    private val MAX_ROW = 13 // 最大 '行' 数(横方向)
-    private val MAX_COL = 13 // 最大 '列' 数(縦方向)
+    private val MAX_ROW = 13 // 最大 '行' 数(縦方向)
+    private val MAX_COL = 13 // 最大 '列' 数(横方向)
 
     private var mStoneCounter = 0 // 手数
     private var mBoard: MutableList<MutableList<Stone>>? = null
+
+    private val mJudge: Judge = Judge()
 
     /**
      * 基盤の表示、初期化設定
@@ -78,7 +79,7 @@ class GameActivity : AppCompatActivity() {
                 // クリックイベント設定
                 btn.setOnClickListener(goListener)
                 // ボタンに画像を設定
-                initButtonImage(btn, row, col, edge)
+                initButtonImage(btn, col, row, edge)
                 // テーブルロウにボタンを追加(ボタンの大きさは正方形なので、高さ・幅ともに同じ)
                 tableRow.addView(btn, gridWidth, gridWidth)
                 // 石を生成(初期化)
@@ -91,26 +92,26 @@ class GameActivity : AppCompatActivity() {
     }
 
     /**
-     * 基盤の画像設定（初期化）
+     * 基盤の画像設定（ボタンの初期化）
      */
-    private fun initButtonImage(btn: Button, row: Int, col: Int, edge:Int){
+    private fun initButtonImage(btn: Button, col: Int, row: Int, edge:Int){
         // ボタン
         btn.setEnabled(true);
 
         // 左上
-        if((row == 0) && (col == 0)) {
+        if((col == 0) && (row == 0)) {
             btn.background = getDrawable(R.drawable.cell_empty_tl)
         }
         // 右上
-        else if( (row == 0) && col == edge) {
+        else if((col == edge) && (row == 0)) {
             btn.background = getDrawable(R.drawable.cell_empty_tr)
         }
         // 左下
-        else if(row == edge && (col == 0)) {
+        else if((col == 0) && (row == edge)) {
             btn.background = getDrawable(R.drawable.cell_empty_bl)
         }
         // 右下
-        else if(row == edge && col == edge) {
+        else if((col == edge) && (row == edge)) {
             btn.background = getDrawable(R.drawable.cell_empty_br)
         }
         else if(row == 0) {
@@ -139,11 +140,13 @@ class GameActivity : AppCompatActivity() {
         for(row in 0 until MAX_ROW) {
             for(col in 0 until MAX_COL) {
                 stone = mBoard?.get(row)?.get(col) as Stone
+                // 石の状態を空にする
+                stone.state = StoneState.EMPTY
                 // ボタンの画像を設定
-                initButtonImage(stone.btn, row, col, edge)
+                initButtonImage(stone.btn, col, row, edge)
             }
         }
-
+        // 初期化
         mStoneCounter = 0
     }
 
@@ -158,6 +161,8 @@ class GameActivity : AppCompatActivity() {
 
             // 手数をカウント
             mStoneCounter++
+            // 石の状態を持つ変数
+            var stoneState: StoneState = StoneState.EMPTY
             // ボタンへキャスト
             val btn = v as Button
             // ボタンを押せなくする
@@ -170,48 +175,64 @@ class GameActivity : AppCompatActivity() {
             else if(mStoneCounter % 2 != 0) {
                 // 先手
                 btn.background = getDrawable(R.drawable.stone_black)
+                stoneState = StoneState.BLACK
             } else {
                 //　後手
                 btn.background = getDrawable(R.drawable.stone_white)
+                stoneState = StoneState.WHITE
             }
 
-            playProcess(btn)
+            playProcess(btn, stoneState)
         }
     }
 
     /**
      * 碁を打った後の処理
      */
-    private fun playProcess(btn: Button) {
+    private fun playProcess(btn: Button, stoneState: StoneState) {
         var stone: Stone?
         var posX: Int = MAX_ROW
         var posY: Int = MAX_COL
+        var res: JudgeState
+        var message: String = ""
 
-        // 石を置いた場所の検索
+        // 石を置いた場所の検索と石の状態を設定(黒、色を設定)
         for(row in 0 until MAX_ROW) {
             for(col in 0 until  MAX_COL) {
                 stone = mBoard?.get(row)?.get(col) as Stone
                 if(stone.btn == btn) {
-                    posX = row
-                    posY = col
+                    stone.state = stoneState
+                    posX = col
+                    posY = row
                     break;
                 }
             }
         }
 
-        if((posX == MAX_ROW) && posY == MAX_COL) {
+        if((posX == MAX_COL) && posY == MAX_ROW) {
             // 例外処理はどうする？
             return
         }
 
         // Judge
-        // judgeWinLoss(mBoard, mStoneCounter, posX, posY)
+        res = mJudge.judgeWinLoss(mBoard, mStoneCounter, posX, posY)
+        when(res){
+            JudgeState.WIN_BLACK -> {
+                message = "黒の勝ち"
+            }
+            JudgeState.WIN_WHITE -> {
+                message = "白の勝ち"
+            }
+            JudgeState.DRAW -> {
+                message = "引き分け 対局開始に戻ります"
+            }
+        }
 
-        // 引き分け処理
-        if(mStoneCounter == (MAX_ROW * MAX_COL)) {
+        // ゲームが終了したら、ダイアログ表示
+        if(res != JudgeState.CONTINUE) {
             val dialog = AlertDialog.Builder(this)
-                .setTitle("引き分け") // タイトル
-                .setMessage("対局開始に戻ります") // メッセージ
+                //.setTitle("引き分け") // タイトル
+                .setMessage(message) // メッセージ
                 .setPositiveButton("OK") { dialog, which -> // OK
                     resetProcess()
                 }
