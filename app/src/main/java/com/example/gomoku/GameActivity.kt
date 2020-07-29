@@ -13,9 +13,17 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_game.*
 
-
+/**
+ * 五目並べのゲームアクティビティクラス
+ */
 class GameActivity : AppCompatActivity() {
+    /**
+     * Activity起動時に初めにコールされるメソッド
+     *
+     * @param savedInstanceState アクティビティの以前に保存された状態を含む Bundle オブジェクト
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,9 +37,11 @@ class GameActivity : AppCompatActivity() {
     private val MAX_ROW = 13 // 最大 '行' 数(縦方向)
     private val MAX_COL = 13 // 最大 '列' 数(横方向)
 
-    private var mStoneCounter = 0 // 手数
+    /**　手数　*/
+    private var mStoneCounter = 0
+    /**　ボードの石情報　*/
     private var mBoard: MutableList<MutableList<Stone>>? = null
-
+    /**　判定クラス　*/
     private val mJudge: Judge = Judge()
 
     /**
@@ -55,12 +65,10 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
 
         //　戻るボタンの設定
-        var backBtn: Button = findViewById(R.id.back)
-        backBtn.setOnClickListener(backListener)
+        back.setOnClickListener(backListener)
 
         // リセットボタン
-        var resetBtn: Button = findViewById(R.id.reset)
-        resetBtn.setOnClickListener(resetListener)
+        reset.setOnClickListener(resetListener)
 
         // テーブルレイアウト
         //val tableLayout :TableLayout  = TableLayout(this);
@@ -114,18 +122,23 @@ class GameActivity : AppCompatActivity() {
         else if((col == edge) && (row == edge)) {
             btn.background = getDrawable(R.drawable.cell_empty_br)
         }
+        // 上端
         else if(row == 0) {
             btn.background = getDrawable(R.drawable.cell_empty_t)
         }
+        // 下端
         else if(row == edge) {
             btn.background = getDrawable(R.drawable.cell_empty_b)
         }
+        // 左端
         else if(col == 0) {
             btn.background = getDrawable(R.drawable.cell_empty_l)
         }
+        // 右端
         else if(col == edge) {
             btn.background = getDrawable(R.drawable.cell_empty_r)
         }
+        // 上記以外
         else {
             btn.background = getDrawable(R.drawable.cell_empty)
         }
@@ -169,10 +182,7 @@ class GameActivity : AppCompatActivity() {
             btn.setEnabled(false)
 
             // 石を置く
-            if(mStoneCounter == 0) {
-                // 例外処理はどうする？
-            }
-            else if(mStoneCounter % 2 != 0) {
+            if(mStoneCounter % 2 != 0) {
                 // 先手
                 btn.background = getDrawable(R.drawable.stone_black)
                 stoneState = StoneState.BLACK
@@ -209,22 +219,17 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
-        if((posX == MAX_COL) && posY == MAX_ROW) {
-            // 例外処理はどうする？
-            return
-        }
-
         // Judge
         res = mJudge.judgeWinLoss(mBoard, mStoneCounter, posX, posY)
         when(res){
             JudgeState.WIN_BLACK -> {
-                message = "黒の勝ち"
+                message = getString(R.string.msg_win_black)
             }
             JudgeState.WIN_WHITE -> {
-                message = "白の勝ち"
+                message = getString(R.string.msg_win_white)
             }
             JudgeState.DRAW -> {
-                message = "引き分け 対局開始に戻ります"
+                message = getString(R.string.msg_draw)
             }
         }
 
@@ -233,7 +238,7 @@ class GameActivity : AppCompatActivity() {
             val dialog = AlertDialog.Builder(this)
                 //.setTitle("引き分け") // タイトル
                 .setMessage(message) // メッセージ
-                .setPositiveButton("OK") { dialog, which -> // OK
+                .setPositiveButton(getString(R.string.ok_button)) { dialog, which -> // OK
                     resetProcess()
                 }
                 .create()
