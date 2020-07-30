@@ -9,6 +9,10 @@ import kotlinx.android.synthetic.main.activity_main.*
  * 五目並べのスタートアクティビティクラス
  */
 class MainActivity : AppCompatActivity(), SettingsDialog.NoticeDialogLister {
+    //参考サイト
+    //http://www.366service.com/jp/qa/39fcb9b752f2a84833331fdc69a31381　　　ポップアップdialogFragmentにデータを渡したい
+    //https://101010.fun/posts/android-try-dialog.html#header-7   ダイアログからアクティビティへコールバックする
+
     private var setting = Setting(13, false, false, true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +36,7 @@ class MainActivity : AppCompatActivity(), SettingsDialog.NoticeDialogLister {
      * @param index         選択された路盤
      */
     private fun convertRoadbed(index: Int?) {
+        // 路盤選択RadioButtonがXMLに実装できるまでの仮実装
         val roadbedMap: Map<Int, Int> = mapOf(0 to 19, 1 to 15, 2 to 13, 3 to 9)
         if (index != null) {
             setting.roadbed = roadbedMap[index]!!
