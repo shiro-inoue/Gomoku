@@ -11,12 +11,12 @@
         android:layout_height="200dp"
         android:autoSizeTextType="uniform"
         android:text="@string/app_proviso"
+        android:textAlignment="center"
         app:autoSizeMinTextSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <Button
         android:id="@+id/startButton"
