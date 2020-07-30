@@ -27,22 +27,27 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 初期化処理
-        mBoard = MutableList(MAX_ROW, {mutableListOf<Stone>()})
-
-        // 基盤の初期化
-        initBoard();
-
         // Settingクラスの受け取り
         val setting = intent.getSerializableExtra(MainActivity.KEYSETTING)
 
         // Judgeクラスのinitをコール
         mJudge.init(setting as Setting)
 
+        // 基盤の数を取得
+        mRow = setting.roadbed
+        mCol = setting.roadbed
+
+        // 初期化処理
+        mBoard = MutableList(mRow, {mutableListOf<Stone>()})
+
+        // 基盤の初期化
+        initBoard();
     }
 
-    private val MAX_ROW = 13 // 最大 '行' 数(縦方向)
-    private val MAX_COL = 13 // 最大 '列' 数(横方向)
+    /** 最大 '行' 数(縦方向) */
+    private var mRow = 13
+    /** 最大 '列' 数(横方向) */
+    private var mCol = 13
 
     /**　手数　*/
     private var mStoneCounter = 0
@@ -61,12 +66,12 @@ class GameActivity : AppCompatActivity() {
         var stone: Stone
 
         // 端（基盤の目は正方形なので、縦横同じ数とする）
-        val edge = MAX_ROW - 1
+        val edge = mRow - 1
 
         // アプリケーションサイズの取得
         val size = getDispSize()
         // 基盤の目のサイズを取得
-        val gridWidth: Int = size.x / MAX_COL
+        val gridWidth: Int = size.x / mCol
 
         //　アクティビティに xml を配置
         setContentView(R.layout.activity_game)
@@ -85,10 +90,10 @@ class GameActivity : AppCompatActivity() {
         tableLayout.setBackgroundColor(Color.WHITE);
 
         // 基盤の初期化
-        for(row in 0 until MAX_ROW) {
+        for(row in 0 until mRow) {
             // 行(Row)の生成
             tableRow = TableRow(this)
-            for(col in 0 until MAX_COL) {
+            for(col in 0 until mCol) {
                 // ボタン生成
                 btn = Button(this)
                 // クリックイベント設定
@@ -155,10 +160,10 @@ class GameActivity : AppCompatActivity() {
      * リセット処理
      */
     private fun resetProcess() {
-        val edge = MAX_ROW - 1
+        val edge = mRow - 1
         var stone: Stone
-        for(row in 0 until MAX_ROW) {
-            for(col in 0 until MAX_COL) {
+        for(row in 0 until mRow) {
+            for(col in 0 until mCol) {
                 stone = mBoard?.get(row)?.get(col) as Stone
                 // 石の状態を空にする
                 stone.state = StoneState.EMPTY
@@ -208,14 +213,14 @@ class GameActivity : AppCompatActivity() {
      */
     private fun playProcess(btn: Button, stoneState: StoneState) {
         var stone: Stone?
-        var posX: Int = MAX_ROW
-        var posY: Int = MAX_COL
+        var posX: Int = mRow
+        var posY: Int = mCol
         var res: JudgeState
         var message: String = ""
 
         // 石を置いた場所の検索と石の状態を設定(黒、色を設定)
-        for(row in 0 until MAX_ROW) {
-            for(col in 0 until  MAX_COL) {
+        for(row in 0 until mRow) {
+            for(col in 0 until  mCol) {
                 stone = mBoard?.get(row)?.get(col) as Stone
                 if(stone.btn == btn) {
                     stone.state = stoneState
