@@ -9,7 +9,7 @@
         android:id="@+id/roadbed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="路盤" />
+        android:text="@string/app_roadbed" />
 
 <!--    <RadioGroup-->
 <!--        android:id="@+id/radioGroup"-->
@@ -50,7 +50,7 @@
         android:id="@+id/forbiddenHand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="先手の禁じ手" />
+        android:text="@string/app_forbiddenHandTitle" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="三三禁" />
+            android:text="@string/app_forbiddenHand33" />
 
         <CheckBox
             android:id="@+id/checkBox33"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="禁じ手とする" />
+            android:text="@string/app_forbiddenHand" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="四四禁" />
+            android:text="@string/app_forbiddenHand44" />
 
         <CheckBox
             android:id="@+id/checkBox44"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="禁じ手とする" />
+            android:text="@string/app_forbiddenHand" />
     </LinearLayout>
 
     <LinearLayout
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="長連" />
+            android:text="@string/app_forbiddenHandChohren" />
 
         <CheckBox
             android:id="@+id/checkBoxChohren"
@@ -113,7 +113,7 @@
             android:layout_weight="1"
             android:checked="true"
             android:enabled="false"
-            android:text="禁じ手とする" />
+            android:text="@string/app_forbiddenHand" />
     </LinearLayout>
 
 

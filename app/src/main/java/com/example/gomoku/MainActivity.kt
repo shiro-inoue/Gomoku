@@ -25,14 +25,14 @@ class SettingsDialog : DialogFragment() {
         if (index != null) {
 
             builder.setView(signinView)
-                .setTitle("設定")
+                .setTitle(R.string.app_settingsDialog)
                 .setSingleChoiceItems(roadbedList, index) { dialog, which ->
                     selectRoadbed = which
                 }
-                .setPositiveButton("設定") { dialog, id ->
+                .setPositiveButton(R.string.app_settingsButton) { dialog, id ->
                     mLister?.onDialogPositiveClick(selectRoadbed)
                 }
-                .setNegativeButton("キャンセル") { dialog, id ->
+                .setNegativeButton(R.string.app_cancelButton) { dialog, id ->
                 }
         }
 
