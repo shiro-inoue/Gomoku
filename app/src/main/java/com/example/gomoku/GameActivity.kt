@@ -28,7 +28,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Settingクラスの受け取り
-        val setting = intent.getSerializableExtra(MainActivity.KEYSETTING)
+        val setting = intent.getSerializableExtra(Setting.KEYSETTING)
 
         // Judgeクラスのinitをコール
         mJudge.init(setting as Setting)

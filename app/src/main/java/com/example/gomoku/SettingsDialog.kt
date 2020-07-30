@@ -11,12 +11,17 @@ import androidx.fragment.app.DialogFragment
  */
 class SettingsDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        //参考サイト
+        //http://www.366service.com/jp/qa/39fcb9b752f2a84833331fdc69a31381　　　ポップアップdialogFragmentにデータを渡したい
+        //https://101010.fun/posts/android-try-dialog.html#header-7   ダイアログからアクティビティへコールバックする
+
         val builder = AlertDialog.Builder(context!!)
         val inflater = activity!!.layoutInflater
         val signinView = inflater.inflate(R.layout.dialog_settings, null)
         var selectRoadbed: Int? = 0
 
         val roadbed = arguments?.getInt(KEYROADBED)
+        // 路盤選択RadioButtonがXMLに実装できるまでの仮実装
         val roadbedMap: Map<Int, Int> = mapOf(19 to 0, 15 to 1, 13 to 2, 9 to 3)
         val index = roadbedMap[roadbed]
 
