@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
+/**
+ * 設定ダイアログクラス
+ */
 class SettingsDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(context!!)
@@ -13,10 +16,11 @@ class SettingsDialog : DialogFragment() {
         val signinView = inflater.inflate(R.layout.dialog_settings, null)
         var selectRoadbed: Int? = 0
 
-        val roadbed = arguments?.getInt("roadbed")
+        val roadbed = arguments?.getInt(KEYROADBED)
         val roadbedMap: Map<Int, Int> = mapOf(19 to 0, 15 to 1, 13 to 2, 9 to 3)
         val index = roadbedMap[roadbed]
 
+        // 本当はXMLで表示したいが、RadioButton取得・設定ができなかったため、ここで定義
         val roadbedList = arrayOf("19路盤", "15路盤", "13路盤", "9路盤")
 
         if (index != null) {
@@ -27,6 +31,7 @@ class SettingsDialog : DialogFragment() {
                     selectRoadbed = which
                 }
                 .setPositiveButton(R.string.app_settingsButton) { dialog, id ->
+                    // コールバック関数
                     mLister?.onDialogPositiveClick(selectRoadbed)
                 }
                 .setNegativeButton(R.string.app_cancelButton) { dialog, id ->
@@ -37,15 +42,24 @@ class SettingsDialog : DialogFragment() {
     }
 
     companion object {
+        // 路盤取得用キー
+        const val KEYROADBED = "ROADBED"
+
+        /**
+         * パラメータ引き渡し用関数
+         */
         fun newInstance(setting: Setting): SettingsDialog {
             val fragment = SettingsDialog()
             val args = Bundle()
-            args.putInt("roadbed", setting.roadbed)
+            args.putInt(KEYROADBED, setting.roadbed)
             fragment.arguments = args
             return fragment
         }
     }
 
+    /**
+     * コールバック用インターフェース
+     */
     public interface NoticeDialogLister {
         public fun onDialogPositiveClick(index: Int?)
     }
@@ -55,6 +69,7 @@ class SettingsDialog : DialogFragment() {
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         try {
+            // MainActivityをNoticeDialogListerへキャスト
             mLister = context as NoticeDialogLister
         } catch (e: ClassCastException) {
             throw ClassCastException("${context.toString()} must implement NoticeDialogListener")

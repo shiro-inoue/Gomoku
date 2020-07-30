@@ -34,7 +34,7 @@ class GameActivity : AppCompatActivity() {
         initBoard();
 
         // Settingクラスの受け取り
-        val setting = intent.getSerializableExtra("SETTING")
+        val setting = intent.getSerializableExtra(MainActivity.KEYSETTING)
 
         // Judgeクラスのinitをコール
         mJudge.init(setting as Setting)

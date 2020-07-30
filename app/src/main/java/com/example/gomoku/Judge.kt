@@ -43,7 +43,7 @@ class Judge {
 
     /**
      * 初期化関数
-     * 第一弾（7月は）何もしない
+     * @param setting       Settingクラス
      */
     fun init(setting: Setting) {println("***** setting.roadbed = " + setting.roadbed)}
 
