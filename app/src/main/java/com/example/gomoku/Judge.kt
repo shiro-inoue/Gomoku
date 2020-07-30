@@ -45,7 +45,7 @@ class Judge {
      * 初期化関数
      * 第一弾（7月は）何もしない
      */
-    fun init() {}
+    fun init(setting: Setting) {println("***** setting.roadbed = " + setting.roadbed)}
 
     /**
      * 勝負け判定関数

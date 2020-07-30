@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Gomoku</string>
-    <string name="app_proviso">７月は何もないが、８月は、ルールや盤の大きさを選べる、ラジオボタンや、プルダウンが配置される。</string>
+    <string name="app_proviso">五目並べ</string>
     <string name="app_startButton">ゲーム開始</string>
     <string name="msg_win_black">"黒の勝ち"</string>
     <string name="msg_win_white">"白の勝ち"</string>
