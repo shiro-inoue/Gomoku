@@ -17,14 +17,23 @@ enum class JudgeState {
 /**
  * 連続チェックの方向
  */
-enum class Direction(val dirId: Int) {
+enum class Direction {
     /** 上下 */
-    TOP_BOTTOM(0),
+    TOP_BOTTOM,
     /** 左右 */
-    LEFT_RIGHT(1),
+    LEFT_RIGHT,
     /** 右上から左下 */
-    DIAGONAL_RT_LB(2),
+    DIAGONAL_RT_LB,
     /** 左上から右下 */
+    DIAGONAL_LT_RB
+}
+
+/*
+//もっと良い記載が見つかったが、学習目的でこのようなやり方ができることを示すために、コメントアウトで残す
+enum class Direction(val dirId: Int) {
+    TOP_BOTTOM(0),
+    LEFT_RIGHT(1),
+    DIAGONAL_RT_LB(2),
     DIAGONAL_LT_RB(3);
 
     companion object {
@@ -37,15 +46,18 @@ enum class Direction(val dirId: Int) {
         }
     }
 }
+*/
 
 class Judge {
-    private var boardSize = 13
+    private var ruleSetting = Setting(13,false,false,true)
 
     /**
      * 初期化関数
      * @param setting       Settingクラス
      */
-    fun init(setting: Setting) {println("***** setting.roadbed = " + setting.roadbed)}
+    fun init(setting: Setting) {
+        ruleSetting = setting
+    }
 
     /**
      * 勝負け判定関数
@@ -63,15 +75,16 @@ class Judge {
         if( checkStraightStone(board, posX, posY, 5, isBlack)) {
             if( isBlack) {
                 //6つ並んだら、黒番は反則負け
-                if( checkStraightStone(board, posX, posY, 6, isBlack)) {
+                if( ruleSetting.forbiddenHandChohren == true &&
+                    checkStraightStone(board, posX, posY, 6, isBlack)) {
                     return JudgeState.WIN_WHITE
                 }
                 return JudgeState.WIN_BLACK
             }
             return JudgeState.WIN_WHITE
         }
-        //8月は盤の大きさが変わるので、もらう必要あり
-        if( stoneCounter == boardSize * boardSize) {
+
+        if( stoneCounter == ruleSetting.roadbed * ruleSetting.roadbed) {
             return JudgeState.DRAW
         }
         return JudgeState.CONTINUE
@@ -135,7 +148,7 @@ class Judge {
             x = posX + addX
             y = posY + addY
 
-            while (x >= 0 && y >= 0 && x < boardSize && y < boardSize && counter < checkCnt) {
+            while (x >= 0 && y >= 0 && x < ruleSetting.roadbed && y < ruleSetting.roadbed && counter < checkCnt) {
                 if (board[y][x].state == checkColor) {
                     counter++
                 } else {
@@ -164,12 +177,19 @@ class Judge {
         if( board == null) {
             return false
         }
-
+        for( dir in Direction.values()) {
+            if( countStraightStone( board, posX, posY, checkCnt, isBlack, dir) == true) {
+                return true
+            }
+        }
+/*
+        //もっと良い記載が見つかったが、学習目的でこのようなやり方ができることを示すために、コメントアウトで残す
         for( i in 0 until 4) {
             if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.valueOf(i)) == true) {
                 return true
             }
         }
+ */
 
         return false
     }
