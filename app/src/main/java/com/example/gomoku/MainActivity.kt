@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), SettingsDialog.NoticeDialogLister {
 
         startButton.setOnClickListener {
             val intent = Intent(applicationContext, GameActivity::class.java)
-            intent.putExtra(KEYSETTING, setting)
+            intent.putExtra(Setting.KEYSETTING, setting)
             startActivity(intent)
         }
 
@@ -49,10 +49,5 @@ class MainActivity : AppCompatActivity(), SettingsDialog.NoticeDialogLister {
      */
     override fun onDialogPositiveClick(index: Int?) {
         convertRoadbed(index)
-    }
-
-    companion object {
-        // Settingクラス取得用キー
-        const val KEYSETTING = "SETTING"
     }
 }

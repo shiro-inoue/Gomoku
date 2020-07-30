@@ -14,4 +14,10 @@ class Setting (
     var forbiddenHand44: Boolean,
     /**　長連　*/
     var forbiddenHandChohren: Boolean
-): Serializable
+): Serializable {
+
+    companion object {
+        // Settingクラス取得用キー
+        const val KEYSETTING = "SETTING"
+    }
+}
