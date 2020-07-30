@@ -1,9 +1,18 @@
 <resources>
     <string name="app_name">Gomoku</string>
-    <string name="app_proviso">７月は何もないが、８月は、ルールや盤の大きさを選べる、ラジオボタンや、プルダウンが配置される。</string>
+    <string name="app_proviso">五目並べ</string>
     <string name="app_startButton">ゲーム開始</string>
     <string name="msg_win_black">"黒の勝ち"</string>
     <string name="msg_win_white">"白の勝ち"</string>
     <string name="msg_draw">"引き分け 対局開始に戻ります"</string>
     <string name="ok_button">"OK"</string>
+    <string name="app_settingsDialog">設定ダイアログ</string>
+    <string name="app_settingsButton">設定</string>
+    <string name="app_cancelButton">キャンセル</string>
+    <string name="app_roadbed">路盤</string>
+    <string name="app_forbiddenHandTitle">先手の禁じ手</string>
+    <string name="app_forbiddenHand33">三三禁</string>
+    <string name="app_forbiddenHand44">四四禁</string>
+    <string name="app_forbiddenHandChohren">長連</string>
+    <string name="app_forbiddenHand">禁じ手とする</string>
 </resources>

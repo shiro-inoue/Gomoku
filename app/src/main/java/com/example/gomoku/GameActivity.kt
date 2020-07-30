@@ -32,6 +32,13 @@ class GameActivity : AppCompatActivity() {
 
         // 基盤の初期化
         initBoard();
+
+        // Settingクラスの受け取り
+        val setting = intent.getSerializableExtra(MainActivity.KEYSETTING)
+
+        // Judgeクラスのinitをコール
+        mJudge.init(setting as Setting)
+
     }
 
     private val MAX_ROW = 13 // 最大 '行' 数(縦方向)
