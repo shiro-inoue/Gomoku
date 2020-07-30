@@ -2,24 +2,40 @@ package com.example.gomoku
 
 /**
  * 判定状態
- * WIN_BLACK    黒勝ち
- * WIN_WHITE    白勝ち
- * DRAW         引き分け
- * CONTINUE     勝負継続
  */
 enum class JudgeState {
-    WIN_BLACK, WIN_WHITE, DRAW, CONTINUE
+    /** 黒勝ち */
+    WIN_BLACK,
+    /** 白勝ち */
+    WIN_WHITE,
+    /** 引き分け */
+    DRAW,
+    /** 勝負継続 */
+    CONTINUE
 }
 
 /**
  * 連続チェックの方向
- * TOP_BOTTOM       上下
- * LEFT_RIGHT       左右
- * DIAGONAL_RT_LB   右上から左下
- * DIAGONAL_LT_RB   左上から右下
  */
-enum class Direction {
-    TOP_BOTTOM, LEFT_RIGHT, DIAGONAL_RT_LB, DIAGONAL_LT_RB
+enum class Direction(val dirId: Int) {
+    /** 上下 */
+    TOP_BOTTOM(0),
+    /** 左右 */
+    LEFT_RIGHT(1),
+    /** 右上から左下 */
+    DIAGONAL_RT_LB(2),
+    /** 左上から右下 */
+    DIAGONAL_LT_RB(3);
+
+    companion object {
+        fun valueOf(dirId:Int) :Direction {
+            //参考サイト
+            //https://kwmt27.net/2017/10/19/kotlin-enum/　　　Int→列挙型変換について
+            //https://qiita.com/watame/items/87b7923d4f3f59ffb653　　filterの使い方
+            val filtered = Direction.values().filter {it.dirId == dirId}.firstOrNull()
+            return filtered ?: throw IllegalArgumentException("no such enum object for the dirId: " + dirId)
+        }
+    }
 }
 
 class Judge {
@@ -149,27 +165,12 @@ class Judge {
             return false
         }
 
-        //Intから列挙型の変換がうまくいけば、すっきりするはず。調査時間が確保できていないので、現状はコメントアウト
-/*        for( i in 0 until 4) {
-            Direction[] values = Direction.values()
-            var dir: Direction = values[i]
-            if( countStraightStone( board, posX, posY, checkCnt, isBlack, dir) == true) {
+        for( i in 0 until 4) {
+            if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.valueOf(i)) == true) {
                 return true
             }
-        }*/
+        }
 
-        if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.TOP_BOTTOM) == true) {
-            return true
-        }
-        if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.LEFT_RIGHT) == true) {
-            return true
-        }
-        if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.DIAGONAL_RT_LB) == true) {
-            return true
-        }
-        if( countStraightStone( board, posX, posY, checkCnt, isBlack, Direction.DIAGONAL_LT_RB) == true) {
-            return true
-        }
         return false
     }
 }
