@@ -19,6 +19,8 @@ class JudgeTest {
 
     private var mBoard: MutableList<MutableList<Stone>>? = null
     private var mStoneCounter = 0 // 手数
+
+    //9路、19路に変更してテストする場合は、ここを書き換える
     private val MAX_ROW = 13 // 最大 '行' 数(横方向)
     private val MAX_COL = 13 // 最大 '列' 数(縦方向)
 
@@ -32,6 +34,9 @@ class JudgeTest {
         } else {
             resetBorad()
         }
+        //これを基本セットとする。これ以外を使いたい場合は、各テストケース内で設定すること
+        val setting = Setting(MAX_ROW, false, false, true)
+        mJudge.init(setting)
     }
 
     fun initBorad() {
@@ -656,7 +661,7 @@ class JudgeTest {
      */
     @Test
     @Throws(Exception::class)
-    fun test04_Straight6_Ｌｏｓｓ_Black() {
+    fun test04_Straight6_Loss_Black() {
         var res:JudgeState
 
         res = setStone(0,5, StoneState.BLACK)
@@ -725,6 +730,46 @@ class JudgeTest {
 
         res = setStone(0,1, StoneState.WHITE)
         assertEquals("failure - Judge　res ", res, JudgeState.WIN_WHITE)
+    }
+    /**
+     * 6連禁反則ルールオフなので、黒番勝ち
+     */
+    @Test
+    @Throws(Exception::class)
+    fun test04_Straight6_Win_Black_At_RuleOff() {
+        var res:JudgeState
+
+        //6連禁反則ルールオフ
+        val setting = Setting(MAX_ROW, false, false, false)
+        mJudge.init(setting)
+
+        res = setStone(0,5, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.CONTINUE)
+
+        mStoneCounter++
+
+        res = setStone(0,4, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.CONTINUE)
+
+        mStoneCounter++
+
+        res = setStone(0,3, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.CONTINUE)
+
+        mStoneCounter++
+
+        res = setStone(0,2, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.CONTINUE)
+
+        mStoneCounter++
+
+        res = setStone(0,0, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.CONTINUE)
+
+        mStoneCounter++
+
+        res = setStone(0,1, StoneState.BLACK)
+        assertEquals("failure - Judge　res ", res, JudgeState.WIN_BLACK)
     }
 
     /**
